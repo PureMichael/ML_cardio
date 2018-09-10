@@ -36,8 +36,8 @@ a=(0.25*np.cos(t))
 
 xr2 = (np.random.rand(rlen)-0.5)/5
 yr2 = (np.random.rand(rlen)-0.5)/5
-x2 = np.add((0.25*np.cos(t)), xr2)
-y2 = np.add(0.25*np.sin(t), yr2)
+x2 = np.add((np.cos(t)), xr2)
+y2 = np.add(np.sin(t), yr2)
 labels2 = np.zeros(len(t))
 
 labels = np.concatenate((labels1, labels2))
@@ -48,6 +48,9 @@ xy=np.column_stack((x, y))
 print(y,'shape of y')
 print(xy.shape, 'shape of xy')
 print(labels.shape, 'shape of lables')
+
+plt.plot(x,y,'k.')
+plt.show()
 
 model = keras.Sequential()
 model.add(keras.layers.Dense(4, input_dim=2, activation='relu'))
