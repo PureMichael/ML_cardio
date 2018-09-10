@@ -39,7 +39,7 @@ model.fit(trainData, trainLabels, epochs=50, batch_size=32,
           validation_data=(testData, testLabels))
 
 scores = model.evaluate(trainData, trainLabels)
-print("\n%sL %.2f%%" % (model.metrics_names[1], scores[0]*100))
+print("\n%sL %.2f%%" % (model.metrics_names[1], scores[1]*100))
 
 
 
