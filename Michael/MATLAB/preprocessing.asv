@@ -1,10 +1,10 @@
 %num = xlsread('CTG.xls','MLData');
-clear
 load('MLdata.mat');
+
 tic
 [x y] = size(num);
 trainperc = 0.75;
-len_train = round(trainperc*x);
+len_train = round(0.75*x);
 len_test = x - len_train;
 
 data_train = num(1:len_train,1:21);
@@ -29,15 +29,11 @@ p2all = s2all(1)/(s1all(1)+s2all(1)+s3all(1));
 p3all = s3all(1)/(s1all(1)+s2all(1)+s3all(1));
 
 
-i1train = find(num(1:len_train,23)==1);
-i2train = find(num(1:len_train,23)==2);
-i3train = find(num(1:len_train,23)==3);
+data_all1 = num(i1all,:);
+data_all2 = num(i2all,:);
+data_all3 = num(i3all,:);
 
-i1test = find(num(len_train+1:x,23)==1);
-i2test = find(num(len_train+1:x,23)==2);
-i3test = find(num(len_train+1:x,23)==3);
-
-
+data_
 
 close all
 yt = 23;
