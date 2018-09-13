@@ -1,6 +1,9 @@
 %num = xlsread('CTG.xls','MLData');
 clear
 load('MLdata.mat');
+[x y] = size(num);
+
+num = num(2:x,:);
 tic
 [x y] = size(num);
 trainperc = 0.75;
@@ -8,7 +11,7 @@ len_train = round(trainperc*x);
 len_test = x - len_train;
 
 data_train = num(1:len_train,1:21);
-data_test = num(len_train+1:x,1:21);
+data_test = num(len_train+1:x,:);
 
 labels = ["baseline value",'accelerations','foetal movement','uterine contractions','light decelerations',...
     'severe decelerations','prolongued decelerations','% time with abnormal shortterm var',...
