@@ -65,6 +65,6 @@ zlabel('Distance from Category3');
 %% Measure accuracy
 
 correct_idx = find(dist_metric(:,4) == data_test(:,23));
-size(correct_idx);
+size(correct_idx)
 
 
