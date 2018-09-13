@@ -6,11 +6,11 @@ load('MLdata.mat');
 num = num(2:x,:);
 tic
 [x y] = size(num);
-trainperc = 0.75;
+trainperc = 0.9;
 len_train = round(trainperc*x);
 len_test = x - len_train;
 
-data_train = num(1:len_train,1:21);
+data_train = num(1:len_train,:);
 data_test = num(len_train+1:x,:);
 
 labels = ["baseline value",'accelerations','foetal movement','uterine contractions','light decelerations',...
