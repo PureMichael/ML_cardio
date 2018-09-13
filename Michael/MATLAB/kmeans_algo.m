@@ -56,8 +56,10 @@ end
 
 %% Plot cloud cluster
 
- scatter3(dist_metric(:,1),dist_metric(:,2),dist_metric(:,3),4,dist_metric(:,4));
-
+scatter3(dist_metric(:,1),dist_metric(:,2),dist_metric(:,3),4,dist_metric(:,4));
+xlabel('Distance from Category1');
+ylabel('Distance from Category2');
+zlabel('Distance from Category3');
 
 
 %% Measure accuracy
