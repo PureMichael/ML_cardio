@@ -56,12 +56,7 @@ end
 
 %% Plot cloud cluster
 
-% colors = ['r','g','b'];
-% S = repmat([50,25,10],numel(x),1);
-% C = repmat(dist_metric(:,4),1,3);
-% s = S(:);
-% c = C(:);
-% scatter3(dist_metric(:,1),dist_metric(:,2),dist_metric(:,3),4,c);
+ scatter3(dist_metric(:,1),dist_metric(:,2),dist_metric(:,3),4,dist_metric(:,4));
 
 
 
