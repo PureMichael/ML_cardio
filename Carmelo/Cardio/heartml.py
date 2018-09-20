@@ -78,3 +78,6 @@ scoresTest = model.evaluate(testData, hot_y2)
 print(str(model.metrics_names[1])+' %.2f%%' % (scores[1]*100) + ' accuracy on trained data')
 print(str(model.metrics_names[1])+' %.2f%%' % (scoresTest[1]*100) + ' accuracy on test data')
 
+with open('model.json' ,'w') as file:
+    file.write(model.to_json())
+model.save_weights('weights.h5')

@@ -87,7 +87,7 @@ scoresTest = model.evaluate(xytest, hot_labelstest,verbose=0)
 print(str(model.metrics_names[1])+' %.2f%%' % (scores[1]*100) + ' accuracy on trained data')
 print(str(model.metrics_names[1])+' %.2f%%' % (scoresTest[1]*100) + ' accuracy on test data')
 k = 0
-cten=15;
+cten=15
 window=1+int(np.round(cten*np.max(xy)))
 ww=window*2+1
 newxy = np.empty([ww**2,2])
@@ -132,8 +132,6 @@ def animate(fnumber):
         ax2=plt.contourf(xm, ym, prdxy,8, cmap=plt.cm.jet)
 
         plt.title(loss + ' - Epoch: '+str(fnumber))
-        if fnumber==epic:
-            print(prdxy)
     else:
         ax2=fig
         plt.title(loss + ' - Epoch: ' + str(epic))
@@ -142,4 +140,3 @@ anim = animation.FuncAnimation(fig, animate, frames=epic+25, interval=100, repea
 if saveVideo == 1:
     anim.save('medusa.mp4',writer=writer,dpi=dpi)
 plt.show()
-print(prd)
