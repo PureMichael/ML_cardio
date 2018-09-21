@@ -9,12 +9,16 @@ import time
 import pandas as pd
 plt.rcParams['animation.ffmpeg_path']='C:/Program Files/ffmpeg/bin/ffmpeg.exe'
 import os
+# s=10
+# random.seed(6+s)
+# tf.set_random_seed(333+s*2)
+# np.random.seed(856+s*3)
 path=os.path.dirname(os.path.realpath('circleml.py'))
 print(path)
-saveVideo=0
+saveVideo=1
 loss='categorical_crossentropy'
 numPts=100
-t = np.arange(round(numPts*np.pi/2),round(4*np.pi*numPts))
+t = np.arange(round(numPts*np.pi/1.75),round(4*np.pi*numPts))
 t = t/numPts
 rlen = len(t)
 rnd = 5
@@ -31,14 +35,14 @@ for ii, theta in enumerate(threads):
     y = sf*(t*np.sin(theta) + sf2*np.sin(t)*np.cos(theta))
     x = np.add(x,xrandom)
     y= np.add(y,yrandom)
-    plt.plot(x,y,'.')
+    # plt.plot(x,y,'.')
     label = ii*np.ones((len(x),1))
     data = np.column_stack((x, y))
     xy = np.concatenate((xy, data))
     labels = np.append(labels, label)
-plt.show(block=False)
-plt.pause(2)
-plt.close()
+# plt.show(block=False)
+# plt.pause(2)
+# plt.close()
 xyl = np.column_stack((xy,labels))
 order = random.sample(range(xyl.shape[0]),xyl.shape[0])
 data = np.zeros((xyl.shape[0],xyl.shape[1]))
@@ -73,8 +77,8 @@ model.add(keras.layers.Dense(64, activation='relu'))
 model.add(keras.layers.Dense(16, activation='relu'))
 # model.add(keras.layers.Dense(8, activation='relu'))
 model.add(keras.layers.Dense(8, activation='sigmoid'))
-omt = keras.optimizers.Adam(lr=0.00075)
-epic=50
+omt = keras.optimizers.Adam(lr=0.00008)
+epic=100
 cblist=[keras.callbacks.ModelCheckpoint('weights.{epoch:02d}.hdf5', save_weights_only=True, period=1)]
 model.compile(optimizer=omt,
               loss=loss,
@@ -109,7 +113,7 @@ cb.set_ticks((np.arange(tn)+0.5))
 cb.set_ticklabels(np.arange(tn))
 dpi = 100
 Writer = animation.writers['ffmpeg']
-writer = Writer(fps=8, metadata=dict(artist='Me'), bitrate=1800)
+writer = Writer(fps=10, metadata=dict(artist='Me'), bitrate=1800)
 def animate(fnumber):
     fnumber+=1
     if fnumber<=epic:

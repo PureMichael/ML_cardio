@@ -31,7 +31,7 @@ clc
 % box on
 
 % % %  
-t=pi/2:0.01:2*pi;
+t=pi/1.1:0.01:2*pi;
 rnd=100;
 sf=1/(2*pi);
 phi=t/12;
