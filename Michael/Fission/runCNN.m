@@ -1,8 +1,8 @@
-clear
+%clear
 load('fissiondata_labeled.mat');
 load('fissiondata_labeled_resized.mat')
 
-%% Coded to set the yes and no to equal size
+%% Coded to set the yes and no to equal size. (2485 of each)
 
 tbl = countEachLabel(imds_resized);
 minSetCount = min(tbl{:,2});
@@ -18,8 +18,8 @@ countEachLabel(imds)
 %subplot(1,2,2);
 %imshow(readimage(imds,fno));
 
-%% Get size of images
-numImages = size(imds.Labels,1)
+%% Get size of images   (2485*2 = 4970)
+numImages = size(imds.Labels,1)  
 % xlen = zeros(1,numImages);
 % ylen = zeros(1,numImages);
 % for i = 1:numImages
@@ -27,9 +27,10 @@ numImages = size(imds.Labels,1)
 %     [xlen(i),ylen(i)] = size(img); 
 % end
 
+tic
 %% Prepare Training and Testing data
 numTrainFiles = round(2485*0.75);
-[imdsTrain,imdsValidation] = splitEachLabel(imds,numTrainFiles,'randomize');
+[imdsTrain,imdsTest] = splitEachLabel(imds,numTrainFiles,'randomize');
 
 %% Setup Layers and Training Options
 layers = [
@@ -41,7 +42,7 @@ layers = [
     
     maxPooling2dLayer(2,'Stride',2)
     
-    convolution2dLayer(3,16,'Padding','same')
+    convolution2dLayer(3,32,'Padding','same')
     batchNormalizationLayer
     reluLayer
     
@@ -59,11 +60,19 @@ options = trainingOptions('sgdm', ...
     'InitialLearnRate',0.01, ...
     'MaxEpochs',4, ...
     'Shuffle','every-epoch', ...
-    'ValidationData',imdsValidation, ...
+    'ValidationData',imdsTest, ...
     'ValidationFrequency',30, ...
     'Verbose',false, ...
-    'Plots','training-progress');
+    'Plots','none');
 
+
+  
 %% Train the network
 %resizeData = imresize(imdsTrain.read(),[176 176])
-net = trainNetwork(imds,layers,options);
+[trainednet, trainedinfo] = trainNetwork(imds,layers,options);
+
+toc
+trainedinfo.ValidationAccuracy(152)
+
+
+
