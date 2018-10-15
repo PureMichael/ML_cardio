@@ -1,13 +1,18 @@
+function [imdsTest, trainedNet,state] = makeCNN()
+%MAKECNN Summary of this function goes here
+
+
+
 %clear
 load('fissiondata_labeled.mat');
 load('fissiondata_labeled_resized.mat')
 
-%% Coded to set the yes and no to equal size. (2485 
+%% Coded to set the yes and no to equal size. (2485 of each)
 
 tbl = countEachLabel(imds_resized);
 minSetCount = min(tbl{:,2});
 imds = splitEachLabel(imds_resized,minSetCount,'randomize');
-countEachLabel(imds)
+countEachLabel(imds);
 
 %% Make sure labels are correct
 %fyes = find(imds.Labels== 'yes',1);
@@ -18,8 +23,8 @@ countEachLabel(imds)
 %subplot(1,2,2);
 %imshow(readimage(imds,fno));
 
-%% Get size of images
-numImages = size(imds.Labels,1)
+%% Get size of images   (2485*2 = 4970)
+numImages = size(imds.Labels,1);
 % xlen = zeros(1,numImages);
 % ylen = zeros(1,numImages);
 % for i = 1:numImages
@@ -27,20 +32,20 @@ numImages = size(imds.Labels,1)
 %     [xlen(i),ylen(i)] = size(img); 
 % end
 
-tic
+%tic
 %% Prepare Training and Testing data
-numTrainFiles = round(2485*0.75);
-[imdsTrain,imdsValidation] = splitEachLabel(imds,numTrainFiles,'randomize');
+numTrainFiles = round(numImages*0.5*0.75);
+[imdsTrain,imdsTest] = splitEachLabel(imds,numTrainFiles,'randomize');
 
 %% Setup Layers and Training Options
 layers = [
     imageInputLayer([176 176 1])
     
-    convolution2dLayer(3,8,'Padding','same')
+    convolution2dLayer(3,8,'Padding','same')  %3 = filter size, 8 = no of Filters
     batchNormalizationLayer
-    reluLayer
+    reluLayer                                 %Rectifying layer. Removes negatives.
     
-    maxPooling2dLayer(2,'Stride',2)
+    maxPooling2dLayer(2,'Stride',2)           %Downsampling to remove redundant data
     
     convolution2dLayer(3,32,'Padding','same')
     batchNormalizationLayer
@@ -58,9 +63,9 @@ layers = [
    
 options = trainingOptions('sgdm', ...
     'InitialLearnRate',0.01, ...
-    'MaxEpochs',4, ...
+    'MaxEpochs',1, ...
     'Shuffle','every-epoch', ...
-    'ValidationData',imdsValidation, ...
+    'ValidationData',imdsTest, ...
     'ValidationFrequency',30, ...
     'Verbose',false, ...
     'Plots','none');
@@ -69,7 +74,11 @@ options = trainingOptions('sgdm', ...
   
 %% Train the network
 %resizeData = imresize(imdsTrain.read(),[176 176])
-[trainednet, trainedinfo] = trainNetwork(imds,layers,options);
+[trainedNet, trainedinfo] = trainNetwork(imds,layers,options);
 
-toc
-trainedinfo.ValidationAccuracy(152)
+%toc
+%trainedinfo.ValidationAccuracy(152);
+
+
+end
+

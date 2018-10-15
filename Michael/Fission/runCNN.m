@@ -7,7 +7,7 @@ load('fissiondata_labeled_resized.mat')
 tbl = countEachLabel(imds_resized);
 minSetCount = min(tbl{:,2});
 imds = splitEachLabel(imds_resized,minSetCount,'randomize');
-countEachLabel(imds)
+countEachLabel(imds);
 
 %% Make sure labels are correct
 %fyes = find(imds.Labels== 'yes',1);
@@ -19,7 +19,7 @@ countEachLabel(imds)
 %imshow(readimage(imds,fno));
 
 %% Get size of images   (2485*2 = 4970)
-numImages = size(imds.Labels,1)  
+numImages = size(imds.Labels,1);
 % xlen = zeros(1,numImages);
 % ylen = zeros(1,numImages);
 % for i = 1:numImages
@@ -36,11 +36,11 @@ numTrainFiles = round(2485*0.75);
 layers = [
     imageInputLayer([176 176 1])
     
-    convolution2dLayer(3,8,'Padding','same')
+    convolution2dLayer(3,8,'Padding','same')  %3 = filter size, 8 = no of Filters
     batchNormalizationLayer
-    reluLayer
+    reluLayer                                 %Rectifying layer. Removes negatives.
     
-    maxPooling2dLayer(2,'Stride',2)
+    maxPooling2dLayer(2,'Stride',2)           %Downsampling to remove redundant data
     
     convolution2dLayer(3,32,'Padding','same')
     batchNormalizationLayer
@@ -69,9 +69,9 @@ options = trainingOptions('sgdm', ...
   
 %% Train the network
 %resizeData = imresize(imdsTrain.read(),[176 176])
-[trainednet, trainedinfo] = trainNetwork(imds,layers,options);
+[trainednet, trainedinfo] = trainNetwork(imdsTrain,layers,options);
 
-toc
+%toc
 trainedinfo.ValidationAccuracy(152)
 
 
