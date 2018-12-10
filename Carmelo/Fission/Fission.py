@@ -108,10 +108,12 @@ model.add(Conv2D(8,(3, 3,), input_shape=(176, 176, 1), padding='same'))
 model.add(BatchNormalization())
 model.add(ReLU())
 model.add(MaxPooling2D((2, 2), strides=2, padding='same'))
+model.add(Dropout(0.2))
 model.add(Conv2D(32,(3, 3,), activation='relu', padding='same'))
 model.add(BatchNormalization())
 model.add(ReLU())
 model.add(MaxPooling2D((3, 3), strides=3, padding='same'))
+model.add(Dropout(0.2))
 model.add(Conv2D(32,(3, 3,), activation='relu', padding='same'))
 model.add(BatchNormalization())
 model.add(ReLU())
@@ -125,7 +127,7 @@ model.compile(loss='binary_crossentropy',
 model.summary()
 print('Fitting Model')
 model.fit(train_imgs, train_labels,
-               epochs=1,
+               epochs=10,
                batch_size=234,
                shuffle=True,
                validation_data=(test_imgs, test_labels))

@@ -2,7 +2,7 @@ clear all
 close all
 clc
 % 
-m=xlsread('CTG_ML.xlsx');
+m=xlsread('CTG.xls');
 % plotmatrix(m(:,1:end))
 c3=find(m(:,end)==3);
 c2=find(m(:,end)==2);

@@ -26,6 +26,7 @@ order = random.sample(range(mldata.shape[0]), mldata.shape[0])
 data = np.empty(shape=(int(mldata.shape[0]), int(mldata.shape[1])))
 for ii in order:
     data[ii, :] = mldata.iloc[order[ii], 0:]
+
 data[:,-1]=np.subtract(data[:,-1],1)
 trainData = data[0:split, :-2]
 trainLabels = data[0:split, -1]
@@ -38,6 +39,9 @@ for i in range(m):
     else:
         color='b.'
     plt.plot(np.arange(n),data[i,:], color)
+
+# plt.legend('Normal', 'Suspect','Pathologic')
+plt.title('Input Data (Attributes)')
 plt.show()
 print(np.column_stack((trainData, trainLabels)))
 testData = data[split:int(data.shape[0]), 0:-2]
@@ -78,6 +82,6 @@ scoresTest = model.evaluate(testData, hot_y2)
 print(str(model.metrics_names[1])+' %.2f%%' % (scores[1]*100) + ' accuracy on trained data')
 print(str(model.metrics_names[1])+' %.2f%%' % (scoresTest[1]*100) + ' accuracy on test data')
 
-with open('model.json' ,'w') as file:
-    file.write(model.to_json())
-model.save_weights('weights.h5')
+# with open('model.json' ,'w') as file:
+#     file.write(model.to_json())
+# model.save_weights('weights.h5')

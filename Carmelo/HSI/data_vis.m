@@ -23,11 +23,12 @@ end
 legend(legend_entries)
 axis tight
 box on
-%% Plot 50 random spectra from each category on its own figure
+%% Plot n random spectra from each category on its own figure
+n=20;
 for ii=1:length(cats)
     ii    
     figure();
-    plot_these = randi(length(d(ii).data(:,1)),50,1);
+    plot_these = randi(length(d(ii).data(:,1)),n,1);
     line = plot(0,nan(length(plot_these),1));
     xd=(1:length(d(ii).data(1,:)))-1;
     for jj=1:length(plot_these)
@@ -38,6 +39,7 @@ for ii=1:length(cats)
         set(line(jj),'XData',xd,'YData',d(ii).data(plot_these(jj),:))
     end 
     title(legend_entries{ii})
+    axis tight
 end 
 
 %%
@@ -45,7 +47,7 @@ figure()
 pt = randi(length(M(:,1)),5,1);
 hold on
 for ii=1:length(pt)
-    plot(M(pt(ii),2:end))
+    plot(M(pt(ii),2:end),'linewidth',2)
     le{ii}=num2str(M(pt(ii),1)-1);
 end 
-legend(le)
+legend(le);axis tight

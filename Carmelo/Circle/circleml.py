@@ -19,7 +19,6 @@ circleData=0
 saveVideo=0
 showPlots=1
 
-
 def frange(start, stop, step):
     i = start
     while i < stop:
@@ -118,11 +117,8 @@ if showPlots ==1 :
 
 model = keras.Sequential()
 model.add(keras.layers.Dense(4, input_dim=2, activation='relu'))
-# model.add(keras.layers.Dense(6, activation='relu'))
 model.add(keras.layers.Dense(12, activation='relu'))
 model.add(keras.layers.Dense(12, activation='relu'))
-# model.add(keras.layers.Dense(6, activation='relu'))
-# model.add(keras.layers.Dense(4, activation='relu'))
 model.add(keras.layers.Dense(1, activation='sigmoid'))
 cblist=[keras.callbacks.ModelCheckpoint('weights.{epoch:02d}.hdf5', save_weights_only=True, period=1)]
 omt = keras.optimizers.Adam(lr=0.01)
@@ -130,6 +126,8 @@ model.compile(loss=loss,
               optimizer=omt,
               metrics=['accuracy'])
 epic=75
+
+print(labelstrain)
 model.fit(xytrain, labelstrain, epochs=epic, verbose=1, batch_size=round(len(labels)/20),callbacks=cblist)
 scoresTrain=model.evaluate(xytrain, labelstrain)
 print("\n%sL %.2f%%" % (model.metrics_names[1], scoresTrain[1]*100))

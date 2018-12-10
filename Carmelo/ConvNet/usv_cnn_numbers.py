@@ -119,29 +119,36 @@ x = Conv2D(16,(3, 3,), activation='relu')(x)
 x = UpSampling2D((2, 2))(x)
 decoded = Conv2D(1,(3, 3,), activation='sigmoid', padding='same')(x)
 
+encoder = Model(input_img, encoded)
 autoencoder = Model(input_img, decoded)
 autoencoder.compile(optimizer='adadelta', loss='binary_crossentropy')
 
-(xtrain, _), (xtest, _) = mnist.load_data()
+(xtrain, xlab), (xtest, _) = mnist.load_data()
+print(xtrain.shape)
+print(type(xtrain))
 xtrain = xtrain.astype('float32')/255
 xtest = xtest.astype('float32')/255
 xtrain = np.reshape(xtrain, (len(xtrain), 28, 28,1))
 xtest = np.reshape(xtest, (len(xtest), 28, 28, 1))
-
 #
 # tensorboars --logdir=/tmp/autoencoder
 
 autoencoder.fit(xtrain,xtrain,
-                epochs=50,
-                batch_size=128,
+                epochs=1,
+                batch_size=128*2,
                 shuffle=True,
                 validation_data=(xtest, xtest))
 # callbacks=[TensorBoard(log_dir='/tmp/autoencoder')]
 
+encoded_imgs = encoder.predict(xtest)
+
 decoded_imgs = autoencoder.predict(xtest)
+print(decoded_imgs)
+
+
 
 n=10
-plt.figure(figsize=(20,4))
+plt.figure(figsize=(15,4))
 for i in range(n):
     ax = plt.subplot(2, n, i+1)
     plt.imshow(xtest[i].reshape(28, 28))
@@ -154,12 +161,26 @@ for i in range(n):
     plt.gray()
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
+plt.show(block=False)
+
+n=10
+plt.figure(figsize=(15,8))
+for i in range(n):
+    ax=plt.subplot(1,n,i+1)
+    plt.imshow(encoded_imgs[i].reshape(4,4*8).T)
+    plt.gray()
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
 plt.show()
 
 
-with open('model.json' ,'w') as file:
-    file.write(autoencoder.to_json())
-autoencoder.save_weights('weights.h5')
 
+
+
+
+# with open('model.json' ,'w') as file:
+#     file.write(autoencoder.to_json())
+# autoencoder.save_weights('weights.h5')
+#
 
 
